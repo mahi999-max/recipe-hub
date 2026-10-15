@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import { authClient } from "../auth-client"
 import { getapi } from "../commonApi/api"
 
@@ -17,4 +17,8 @@ export const getMyFood=async(id)=>{
 
 export const getFoodDetails=async(id)=>{
    return getapi(`/api/allFoods/${id}`)
+}
+
+export const getAllUsers=async()=>{
+   return getapi('/api/allUsers')
 }

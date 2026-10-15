@@ -1,4 +1,4 @@
-import Layout from '@/lib/LayoutSidebar';
+import Layout from '@/lib/DashboardSidebar';
 import React from 'react';
 
 export default function UserLayout({ children }) {

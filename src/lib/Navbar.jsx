@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -19,32 +18,22 @@ import {
 import { getUseSession } from "./api/getApi";
 import { authClient } from "./auth-client";
 import Image from "next/image";
-import { router } from "better-auth/api";
 
 const Logout = async () => {
   await authClient.signOut({
     fetchOptions: {
       onSuccess: () => {
-        redirect("/auth/login"); // redirect to login page
+        redirect("/auth/login");
       },
     },
   });
-}
-
-const navLinks = [
-  { name: "Home", href: "/", icon: House },
-  { name: "Browse Recipes", href: "/recipes", icon: BookOpen },
-  {
-    name: "Dashboard",
-    href: "/dashboard/user/overview",
-    icon: LayoutDashboard,
-  },
-];
+};
 
 export default function Navbar() {
-  const { data: session } = authClient.useSession()
-  const user = session?.user
-  console.log(user);
+  // হুক বা সেশন ডেটা কম্পোনেন্টের ভেতরে কল করা হলো
+  const user = getUseSession();
+  console.log("Active user: ", user);
+
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,6 +41,21 @@ export default function Navbar() {
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
   };
+
+  const navLinks = [
+    { name: "Home", href: "/", icon: House },
+    { name: "Browse Recipes", href: "/recipes", icon: BookOpen },
+  ];
+
+  // যদি ইউজার লগইন করা থাকে (active), তবেই নেভলিস্টে ড্যাশবোর্ড যোগ হবে
+  if (user) {
+    const dashboardHref=user?.role==='admin' ?'/dasboard/admin/overview' : '/dashboard/user/overview'
+    navLinks.push({
+      name: "Dashboard",
+      href: dashboardHref,
+      icon: LayoutDashboard,
+    });
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-default-200 bg-background/90 backdrop-blur-xl">
@@ -88,10 +92,11 @@ export default function Navbar() {
             <Link
               key={href}
               href={href}
-              className={`relative flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${isActive(href)
+              className={`relative flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
+                isActive(href)
                   ? "text-orange-500 bg-orange-50"
                   : "text-default-600 hover:bg-default-100 hover:text-foreground"
-                }`}
+              }`}
             >
               <Icon size={17} />
               {name}
@@ -116,17 +121,23 @@ export default function Navbar() {
           {user ? (
             <>
               <div>HI !! {user?.name}</div>
-              <Image src={user?.image} height={30} width={30} className="rounded-full object-cover" alt="image"></Image>
+              {user?.image && (
+                <Image 
+                  src={user.image} 
+                  height={30} 
+                  width={30} 
+                  className="rounded-full object-cover" 
+                  alt="image" 
+                />
+              )}
               <button
-                onClick={() => {
-                  Logout()
-                  // Logout function call
-                }}
-                className="flex items-center justify-center gap-2 rounded-xl border border-default-200 px-3 py-3 text-sm font-semibold text-foreground hover:bg-default-100"
+                onClick={() => Logout()}
+                className="flex items-center justify-center gap-2 rounded-xl border border-default-200 px-3 py-3 text-sm font-semibold text-foreground hover:bg-default-100 cursor-pointer"
               >
                 <LogOut size={17} />
                 Logout
-              </button></>
+              </button>
+            </>
           ) : (
             <>
               <Link
@@ -179,23 +190,23 @@ export default function Navbar() {
               key={href}
               href={href}
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold ${isActive(href)
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold ${
+                isActive(href)
                   ? "bg-primary/10 text-primary"
                   : "text-default-600 hover:bg-default-100"
-                }`}
+              }`}
             >
               <Icon size={19} />
               {name}
             </Link>
           ))}
 
-
           <div className="grid grid-cols-2 gap-3 pt-2">
             {user ? (
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  // Logout function call
+                  Logout();
                 }}
                 className="flex items-center justify-center gap-2 rounded-xl border border-default-200 px-3 py-3 text-sm font-semibold text-foreground hover:bg-default-100"
               >
@@ -205,7 +216,7 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-xl border border-default-200 px-3 py-3 text-sm font-semibold text-foreground hover:bg-default-100"
                 >
@@ -214,7 +225,7 @@ export default function Navbar() {
                 </Link>
 
                 <Link
-                  href="/register"
+                  href="/auth/registerPage"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-sm font-bold text-primary-foreground hover:opacity-90"
                 >
@@ -223,7 +234,6 @@ export default function Navbar() {
                 </Link>
               </>
             )}
-
           </div>
         </div>
       </motion.div>

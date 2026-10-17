@@ -32,7 +32,7 @@ const Logout = async () => {
 export default function Navbar() {
   // হুক বা সেশন ডেটা কম্পোনেন্টের ভেতরে কল করা হলো
   const user = getUseSession();
-  console.log("Active user: ", user);
+  console.log("Active user role: ", user);
 
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +49,7 @@ export default function Navbar() {
 
   // যদি ইউজার লগইন করা থাকে (active), তবেই নেভলিস্টে ড্যাশবোর্ড যোগ হবে
   if (user) {
-    const dashboardHref=user?.role==='admin' ?'/dasboard/admin/overview' : '/dashboard/user/overview'
+    const dashboardHref=user?.role==='admin' ? '/dashboard/admin/overview' : '/dashboard/user/overview'
     navLinks.push({
       name: "Dashboard",
       href: dashboardHref,

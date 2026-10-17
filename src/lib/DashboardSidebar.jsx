@@ -2,14 +2,14 @@
 import React from 'react';
 import { getUseSession } from '@/lib/api/getApi';
 import Link from 'next/link';
-import { Users, Utensils, Crown, AlertTriangle, LayoutDashboard, House, Blender, ShoppingCart } from 'lucide-react';
+import { Users, Utensils, Crown, AlertTriangle, LayoutDashboard, House, Blender, ShoppingCart, KanbanSquare, DollarSign } from 'lucide-react';
 import { CgAdd } from 'react-icons/cg';
-import { PersonGear, StarFill } from '@gravity-ui/icons';
+import { PersonGear, Persons, StarFill } from '@gravity-ui/icons';
 
 export default function DashboardSidebar() {
   const user = getUseSession();
 const isAdmin = user?.role === 'admin' || user?.email === 'admin@gmail.com';
-console.log("User Role: ", user?.role || (isAdmin ? "admin" : "user"));
+console.log("User Role: ", user?.role);
 // console.log("User Role: ",user?.role);
   // সাধারণ ইউজারের ড্যাশবোর্ড আইটেম
   const normalUserLinks = [
@@ -23,10 +23,11 @@ console.log("User Role: ", user?.role || (isAdmin ? "admin" : "user"));
 
   // অ্যাডমিন ইউজারের জন্য স্পেসিফিক ৪টি আইটেম
   const adminLinks = [
-    { label: "Total Users", href: "/dashboard/admin/users", icon: Users },
-    { label: "Total Recipes", href: "/dashboard/admin/recipes", icon: Utensils },
-    { label: "Total Premium Members", href: "/dashboard/admin/premium-members", icon: Crown },
-    { label: "Total Reports", href: "/dashboard/admin/reports", icon: AlertTriangle },
+    { label: "Overview", href: "/dashboard/admin/overview", icon: House },
+    { label: "Manage Users", href: "/dashboard/admin/admin-users", icon: Persons },
+    { label: "Manage Recipes", href: "/dashboard/admin/admin-recipes", icon: KanbanSquare },
+    { label: "Recipe Reports", href: "/dashboard/admin/admin-reports", icon: AlertTriangle },
+    { label: "Transactions", href: "/dashboard/admin/admin-transactions", icon: DollarSign },
   ];
 
   // রোল অনুযায়ী লিংক নির্ধারণ
@@ -38,7 +39,7 @@ console.log("User Role: ", user?.role || (isAdmin ? "admin" : "user"));
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
           {isAdmin ? "Admin Dashboard" : "User Dashboard"}
         </h2>
-        <p className="text-xs text-gray-500 mt-1">Role: {user?.role || 'user'}</p>
+        <p className="text-xs text-gray-500 mt-1">Role: {user?.role}</p>
       </div>
 
       <nav className="space-y-2">

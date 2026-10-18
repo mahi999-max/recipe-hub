@@ -22,3 +22,8 @@ export const getFoodDetails=async(id)=>{
 export const getAllUsers=async()=>{
    return getapi('/api/allUsers')
 }
+
+export const getAllReports=async()=>{
+   return getapi('/api/reports')
+}
+

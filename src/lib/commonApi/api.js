@@ -1,13 +1,18 @@
 const uri = "http://localhost:5000";
 
 export const getapi = async (req) => {
-  const res = await fetch(`${uri}${req}`, {
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(`${uri}${req}`, {
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data: ${res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("API Fetch Error:", error);
+    throw error;
   }
-
-  return res.json();
 };

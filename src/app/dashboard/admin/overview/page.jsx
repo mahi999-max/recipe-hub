@@ -1,5 +1,5 @@
 'use client'
-import { getAllfood, getAllUsers, getUseSession } from '@/lib/api/getApi';
+import { getAllfood, getAllReports, getAllUsers, getUseSession } from '@/lib/api/getApi';
 import { AlertTriangle, Crown, Users, Utensils } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import TotalUsers from '../admin-users/page';
@@ -7,15 +7,18 @@ import TotalUsers from '../admin-users/page';
 const AdminOverview = () => {
       const [users, setUsers] = useState([]);
       const[recipe, setrecipies]=useState([])
+      const[report,setreport]=useState([])
     // const user=getAllUsers()
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const data = await getAllUsers();
                 const recipe=await getAllfood()
+                const report=await getAllReports()
                 console.log("Fetched Users:", data);
                 setUsers(Array.isArray(data) ? data : []);
                 setrecipies(Array.isArray(recipe) ? recipe : []) 
+                setreport(Array.isArray(report) ? report : []) 
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
@@ -26,12 +29,14 @@ const AdminOverview = () => {
     console.log(users);
   const userArray = Array.isArray(users) ? users : [];
  const recipeArray=Array.isArray(recipe) ? recipe : []
+ const reportArray=Array.isArray(report) ? report : []
     
     const statdata = {
         TotalUsers: userArray.length,
         // এখানে role === "premium" অথবা আপনার প্রপার্টি অনুযায়ী ফিল্টার করা হয়েছে
         TotalPremium: userArray.filter(u => u?.role === "premium" || u?.isPremium === true).length,
-        TotalRecipies: recipeArray.length
+        TotalRecipies: recipeArray.length,
+        TotalReports: reportArray.length
     };
    const stats = [
     {
@@ -57,7 +62,7 @@ const AdminOverview = () => {
     },
     {
       title: "Total Reports",
-      count: "0",
+      count: statdata.TotalReports,
       icon: AlertTriangle,
       color: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800",
       description: "Pending reports to review"

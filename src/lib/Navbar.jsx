@@ -32,7 +32,7 @@ const Logout = async () => {
 export default function Navbar() {
   // হুক বা সেশন ডেটা কম্পোনেন্টের ভেতরে কল করা হলো
   const user = getUseSession();
-  console.log("Active user role: ", user);
+  // console.log("Active user role: ", user);
 
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);

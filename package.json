@@ -13,14 +13,16 @@
     "@gravity-ui/icons": "^2.22.0",
     "@heroui/react": "^3.2.6",
     "@heroui/styles": "^3.2.6",
+    "@stripe/stripe-js": "^10.1.0",
     "better-auth": "^1.7.7",
     "framer-motion": "^14.1.0",
     "lucide-react": "^1.55.0",
     "mongodb": "^7.7.0",
-    "next": "16.4.0",
+    "next": "^16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-icons": "^5.7.0"
+    "react-icons": "^5.7.0",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

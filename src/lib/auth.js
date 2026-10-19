@@ -18,15 +18,24 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  user:{
-    additionalFields:{
-      role:{
-        type:'string',
-      recquired:false,
-      defaultValue:"user",
-      input:false
+  user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        recquired: false,
+        defaultValue: "user",
+        input: false
+      },
+      isPremium: {
+        type: "boolean",
+        defaultValue: false,
+        required: false,
+      },
+      premiumSince: {
+        type: "date",
+        required: false,
       }
-      
+
     }
   }
 });

@@ -22,11 +22,42 @@ const reportOptions = [
   "Copyright Issue",
 ];
 
-const  FoodDetailsView= ({ food, foodId , email}) => {
+const FoodDetailsView = ({ food, foodId, email, purchased }) => {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [selectedReason, setSelectedReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  const [purchasing, setPurchasing] = useState(false);
+
+  const handlePurchase = async () => {
+    if (!email) {
+      window.location.href = "/auth/signin";
+      return;
+    }
+
+    setPurchasing(true);
+
+    try {
+      const res = await fetch("/api/recipe_checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ foodId, email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Unable to start checkout");
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error("Purchase error:", error);
+      alert(error.message || "Checkout failed");
+      setPurchasing(false);
+    }
+  };
 
   const handleReport = async () => {
     if (!selectedReason) {
@@ -187,7 +218,7 @@ const  FoodDetailsView= ({ food, foodId , email}) => {
             </h2>
 
             {Array.isArray(food.instructions) &&
-            food.instructions.length > 0 ? (
+              food.instructions.length > 0 ? (
               <ol className="space-y-4">
                 {food.instructions.map((step, index) => (
                   <li key={index} className="flex gap-4">
@@ -227,13 +258,31 @@ const  FoodDetailsView= ({ food, foodId , email}) => {
                 Report
               </button>
 
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600 active:scale-95"
-              >
-                <ShoppingCart size={20} />
-                Purchase
-              </button>
+              {purchased ? (
+                <div className="flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-green-50 px-6 py-3.5 font-semibold text-green-700">
+                  <CheckCircle size={20} />
+                  Purchased
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handlePurchase}
+                  disabled={purchasing}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {purchasing ? (
+                    <>
+                      <LoaderCircle size={20} className="animate-spin" />
+                      Redirecting...
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart size={20} />
+                      Purchase
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -290,19 +339,17 @@ const  FoodDetailsView= ({ food, foodId , email}) => {
                     setSelectedReason(reason);
                     setMessage("");
                   }}
-                  className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition ${
-                    selectedReason === reason
-                      ? "border-orange-500 bg-orange-50 text-orange-700"
-                      : "border-gray-200 text-gray-700 hover:border-orange-300 hover:bg-orange-50/50"
-                  }`}
+                  className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition ${selectedReason === reason
+                    ? "border-orange-500 bg-orange-50 text-orange-700"
+                    : "border-gray-200 text-gray-700 hover:border-orange-300 hover:bg-orange-50/50"
+                    }`}
                 >
                   <span className="font-medium">{reason}</span>
                   <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-                      selectedReason === reason
-                        ? "border-orange-500 bg-orange-500"
-                        : "border-gray-300"
-                    }`}
+                    className={`flex h-5 w-5 items-center justify-center rounded-full border ${selectedReason === reason
+                      ? "border-orange-500 bg-orange-500"
+                      : "border-gray-300"
+                      }`}
                   >
                     {selectedReason === reason && (
                       <CheckCircle size={15} className="text-white" />
@@ -315,11 +362,10 @@ const  FoodDetailsView= ({ food, foodId , email}) => {
             {message && (
               <p
                 role="status"
-                className={`mt-4 text-sm ${
-                  message.includes("successfully")
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
+                className={`mt-4 text-sm ${message.includes("successfully")
+                  ? "text-green-600"
+                  : "text-red-600"
+                  }`}
               >
                 {message}
               </p>

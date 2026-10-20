@@ -13,19 +13,41 @@ const FoodDetailsContent = async ({ params }) => {
     `http://localhost:5000/api/allFoods/${id}`,
     { cache: "no-store" }
   );
-  
+
   if (!response.ok) {
     notFound();
   }
   const food = await response.json();
-   const session = await auth.api.getSession({
-    headers: await headers()
-});
-console.log(session?.user?.email);
-     const email=session?.user?.email
 
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const email = session?.user?.email;
 
-  return <FoodDetailsView food={food} foodId={id} email={email}/>;
+  // এই user recipe-টা কিনেছে কিনা
+  let purchased = false;
+  if (email) {
+    try {
+      const checkRes = await fetch(
+        `http://localhost:5000/api/purchases/check?email=${encodeURIComponent(email)}&foodId=${id}`,
+        { cache: "no-store" }
+      );
+      if (checkRes.ok) {
+        const checkData = await checkRes.json();
+        purchased = checkData.purchased;
+      }
+    } catch (error) {
+      console.error("Purchase check error:", error);
+    }
+  }
+
+  return (
+    <FoodDetailsView
+      food={food}
+      foodId={id}
+      email={email}
+      purchased={purchased}
+    />
+  );
 };
-
 export default FoodDetailsContent;

@@ -7,6 +7,7 @@ import { Heart, ChefHat } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 
 export default function RecipeCard({ recipe, cardVariants }) {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const [likes, setLikes] = useState(recipe.likeCount || 0);
     const [isLiked, setIsLiked] = useState(false);
 
@@ -17,37 +18,37 @@ export default function RecipeCard({ recipe, cardVariants }) {
     // পেজ রিলোড বা কম্পোনেন্ট লোড হওয়ার সময় সার্ভার থেকে চেক করা এই ইউজার আগে লাইক দিয়েছে কিনা
 
     useEffect(() => {
-    let cancelled = false;
+        let cancelled = false;
 
-    const checkUserLikeStatus = async () => {
-        if (!userId || !recipe?._id) return;
+        const checkUserLikeStatus = async () => {
+            if (!userId || !recipe?._id) return;
 
-        try {
-            // টোকেন ছাড়াই সরাসরি রিকোয়েস্ট পাঠানো হচ্ছে
-            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/likes/${userId}`);
+            try {
+                // টোকেন ছাড়াই সরাসরি রিকোয়েস্ট পাঠানো হচ্ছে
+                const res = await fetch(`${uri}/api/allFoods/likes/${userId}`);
 
-            if (!res.ok) throw new Error("Failed to fetch liked recipes");
+                if (!res.ok) throw new Error("Failed to fetch liked recipes");
 
-            const likedRecipes = await res.json();
+                const likedRecipes = await res.json();
 
-            if (!cancelled && Array.isArray(likedRecipes)) {
-                const isAlreadyLiked = likedRecipes.some(
-                    (item) => String(item._id) === String(recipe._id)
-                );
+                if (!cancelled && Array.isArray(likedRecipes)) {
+                    const isAlreadyLiked = likedRecipes.some(
+                        (item) => String(item._id) === String(recipe._id)
+                    );
 
-                setIsLiked(isAlreadyLiked);
+                    setIsLiked(isAlreadyLiked);
+                }
+            } catch (error) {
+                console.error("Like status check error:", error);
             }
-        } catch (error) {
-            console.error("Like status check error:", error);
-        }
-    };
+        };
 
-    checkUserLikeStatus();
+        checkUserLikeStatus();
 
-    return () => {
-        cancelled = true;
-    };
-}, [recipe._id, userId]);
+        return () => {
+            cancelled = true;
+        };
+    }, [recipe._id, userId]);
 
 
     const handleLikeToggle = async (e) => {
@@ -61,7 +62,7 @@ export default function RecipeCard({ recipe, cardVariants }) {
 
         try {
             const res = await fetch(
-                'https://recipe-hub-server-inky.vercel.app/api/allFoods/likes',
+                `${uri}/api/allFoods/likes`,
                 {
                     method: 'POST',
                     headers: {

@@ -6,6 +6,7 @@ import { getAllfood } from '@/lib/api/getApi';
 import AdminActions from './AdminActions';
 
 export default function ManageRecipesPage() {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +36,7 @@ export default function ManageRecipesPage() {
                 )
             );
 
-            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
+            await fetch(`${uri}/api/allFoods/${recipeId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isfeatured: !currentStatus })
@@ -53,7 +54,7 @@ export default function ManageRecipesPage() {
             setRecipes(prev => prev.filter(item => item._id !== recipeId));
 
             // API Request to delete from backend
-            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
+            await fetch(`${uri}/api/allFoods/${recipeId}`, {
                 method: 'DELETE'
             });
         } catch (error) {

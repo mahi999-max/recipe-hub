@@ -8,6 +8,7 @@ import { getUseSession } from '@/lib/api/getApi';
 import { authClient } from '@/lib/auth-client';
 
 export default function FavoritesPage() {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -19,7 +20,7 @@ export default function FavoritesPage() {
         const fetchFavorites = async () => {
             try {
                 // ব্যাকএন্ডে ইউজারের আইডি দিয়ে ফেচ করার রুট
-                const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/likes/${userId}`);
+                const res = await fetch(`${uri}/api/allFoods/likes/${userId}`);
                 const data = await res.json();
                 setFavoriteRecipes(Array.isArray(data) ? data : []);
             } catch (error) {

@@ -5,14 +5,14 @@ import { Star, Trash2 } from 'lucide-react';
 export default function AdminActions({ recipeId, initialFeatured, onDeleteSuccess, onToggleSuccess }) {
     const [isfeatured, setIsfeatured] = useState(Boolean(initialFeatured));
     const [loading, setLoading] = useState(false);
-
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     // Featured Toggle Handler
     const handleToggleFeatured = async () => {
         const newStatus = !isfeatured;
         setIsfeatured(newStatus); // Instant UI feedback
 
         try {
-            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
+            const res = await fetch(`${uri}/api/allFoods/${recipeId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isfeatured: newStatus })
@@ -36,7 +36,7 @@ export default function AdminActions({ recipeId, initialFeatured, onDeleteSucces
 
         setLoading(true);
         try {
-            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
+            const res = await fetch(`${uri}api/allFoods/${recipeId}`, {
                 method: 'DELETE'
             });
 

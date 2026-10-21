@@ -5,10 +5,10 @@ import { Trash2, CheckCircle2, AlertTriangle, ChefHat } from 'lucide-react';
 export default function ManageReports() {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const fetchReports = async () => {
         try {
-            const res = await fetch('https://recipe-hub-server-inky.vercel.app/api/reports');
+            const res = await fetch(`${uri}/api/reports`);
             const data = await res.json();
             setReports(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -26,11 +26,11 @@ export default function ManageReports() {
         if (!window.confirm("Are you sure you want to delete this recipe permanently?")) return;
 
         try {
-            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${foodId}`, {
+            await fetch(`${uri}/api/allFoods/${foodId}`, {
                 method: 'DELETE',
             });
 
-            await fetch(`https://recipe-hub-server-inky.vercel.app/api/reports/${reportId}`, {
+            await fetch(`${uri}/api/reports/${reportId}`, {
                 method: 'DELETE',
             });
 
@@ -45,7 +45,7 @@ export default function ManageReports() {
         if (!window.confirm("Are you sure you want to dismiss this report?")) return;
 
         try {
-            await fetch(`https://recipe-hub-server-inky.vercel.app/api/reports/${reportId}`, {
+            await fetch(`${uri}/api/reports/${reportId}`, {
                 method: 'DELETE',
             });
 

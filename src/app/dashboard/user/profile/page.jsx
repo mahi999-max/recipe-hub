@@ -15,6 +15,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 
 export default function ProfilePage() {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user;
     console.log("profile: ",user);
@@ -38,7 +39,7 @@ export default function ProfilePage() {
             }
 
             // ২. সরাসরি ব্যাকএন্ড থেকে ইউজারের লেটেস্ট প্রিমিয়াম স্ট্যাটাস ফেচ করা
-            fetch(`https://recipe-hub-server-inky.vercel.app/api/user-status?email=${user.email}`)
+            fetch(`${uri}/api/user-status?email=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (data?.isPremium) {

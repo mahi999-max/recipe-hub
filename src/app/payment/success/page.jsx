@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { CheckCircle2, ArrowRight, Loader2, XCircle } from "lucide-react";
 
 function SuccessContent() {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
 
@@ -20,7 +21,7 @@ function SuccessContent() {
 
         const verify = async () => {
             try {
-                const res = await fetch("https://recipe-hub-server-inky.vercel.app/api/orders/confirm", {
+                const res = await fetch(`${uri}/api/orders/confirm`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ sessionId }),

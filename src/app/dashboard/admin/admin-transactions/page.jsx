@@ -11,6 +11,7 @@ import {
 import { auth } from "@/lib/auth";
 import { signToken } from "@/lib/token";
 const TransactionsContent = async () => {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const session = await auth.api.getSession({ headers: await headers() });
     const user = session?.user;
 
@@ -38,7 +39,7 @@ const TransactionsContent = async () => {
     try {
         const token = signToken(user);
 
-        const res = await fetch("https://recipe-hub-server-inky.vercel.app/api/admin/transactions", {
+        const res = await fetch(`${uri}/api/admin/transactions`, {
             cache: "no-store",
             headers: { Authorization: `Bearer ${token}` },
         });

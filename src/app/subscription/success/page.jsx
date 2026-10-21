@@ -6,6 +6,7 @@ import { CheckCircle2, Crown, ArrowRight, Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client"; 
 
 export default function SubscriptionSuccessPage() {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const session = authClient.useSession(); 
     const userEmail = session?.data?.user?.email;
     
@@ -17,7 +18,7 @@ export default function SubscriptionSuccessPage() {
 
             try {
                 // ব্যাকএন্ডে PATCH রিকোয়েস্ট পাঠানো হচ্ছে
-                const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/users/make-premium/${userEmail}`, {
+                const res = await fetch(`${uri}/api/users/make-premium/${userEmail}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'

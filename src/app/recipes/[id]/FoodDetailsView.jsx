@@ -23,6 +23,7 @@ const reportOptions = [
 ];
 
 const FoodDetailsView = ({ food, foodId, email, purchased }) => {
+  const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [selectedReason, setSelectedReason] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ const FoodDetailsView = ({ food, foodId, email, purchased }) => {
     setMessage("");
 
     try {
-      const response = await fetch("https://recipe-hub-server-inky.vercel.app/api/reports", {
+      const response = await fetch(`${uri}/api/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

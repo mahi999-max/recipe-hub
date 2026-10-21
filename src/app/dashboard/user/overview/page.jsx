@@ -6,6 +6,7 @@ import { getapi } from "@/lib/commonApi/api";
 import { useEffect, useState } from "react";
 
 export default function OverviewPage() {
+  const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
   const [totalFoods, setTotalFoods] = useState(0);
   const [totalFavourites, setTotalFavourites] = useState(0);
   const [totalPurchased, setTotalPurchased] = useState(0);
@@ -35,7 +36,7 @@ useEffect(() => {
 
       // Favourite: direct fetch
       const favResponse = await fetch(
-        `https://recipe-hub-server-inky.vercel.app/api/allFoods/likes/${encodeURIComponent(user.id)}`
+        `${uri}/api/allFoods/likes/${encodeURIComponent(user.id)}`
       );
 
       if (!favResponse.ok) {
@@ -47,7 +48,7 @@ useEffect(() => {
 
       // Purchased: direct fetch with email
       const purchaseResponse = await fetch(
-        `https://recipe-hub-server-inky.vercel.app/api/my-purchases?email=${encodeURIComponent(user.email)}`
+        `${uri}/api/my-purchases?email=${encodeURIComponent(user.email)}`
       );
 
       if (!purchaseResponse.ok) {

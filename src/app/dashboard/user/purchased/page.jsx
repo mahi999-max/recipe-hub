@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 
 
 const MyPurchasedRecipesPage = async () => {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const session = await auth.api.getSession({ headers: await headers() });
     const email = session?.user?.email;
 
@@ -32,7 +33,7 @@ const MyPurchasedRecipesPage = async () => {
 
     try {
         const res = await fetch(
-            `https://recipe-hub-server-inky.vercel.app/api/my-purchases?email=${encodeURIComponent(email)}`,
+            `${uri}/api/my-purchases?email=${encodeURIComponent(email)}`,
             { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to load purchases");

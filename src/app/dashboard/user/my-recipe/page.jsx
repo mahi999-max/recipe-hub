@@ -5,6 +5,7 @@ import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 const MyRecipe = () => {
+    const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const user = getUseSession();
     const [userfood, setuserfood] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -32,7 +33,7 @@ const MyRecipe = () => {
         if (!confirm("Are you sure you want to delete this recipe?")) return;
 
         try {
-            const response = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${id}`, {
+            const response = await fetch(`${uri}/api/allFoods/${id}`, {
                 method: 'DELETE',
             });
 

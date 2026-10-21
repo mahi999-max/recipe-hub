@@ -6,9 +6,10 @@ import FoodDetailsView from "./FoodDetailsView";
 import { auth } from "@/lib/auth";
 
 const FoodDetailsContent = async ({ params }) => {
+  const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
   const { id } = await params;
 
-  const response = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${id}`, {
+  const response = await fetch(`${uri}/api/allFoods/${id}`, {
     cache: "no-store",
   });
 
@@ -24,7 +25,7 @@ const FoodDetailsContent = async ({ params }) => {
   if (email) {
     try {
       const checkRes = await fetch(
-        `https://recipe-hub-server-inky.vercel.app/api/purchases/check?email=${encodeURIComponent(email)}&foodId=${id}`,
+        `${uri}/api/purchases/check?email=${encodeURIComponent(email)}&foodId=${id}`,
         { cache: "no-store" }
       );
       if (checkRes.ok) {

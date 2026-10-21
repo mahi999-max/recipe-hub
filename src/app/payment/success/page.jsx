@@ -20,7 +20,7 @@ function SuccessContent() {
 
         const verify = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/orders/confirm", {
+                const res = await fetch("https://recipe-hub-server-inky.vercel.app/api/orders/confirm", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ sessionId }),

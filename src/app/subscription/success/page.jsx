@@ -17,7 +17,7 @@ export default function SubscriptionSuccessPage() {
 
             try {
                 // ব্যাকএন্ডে PATCH রিকোয়েস্ট পাঠানো হচ্ছে
-                const res = await fetch(`http://localhost:5000/api/users/make-premium/${userEmail}`, {
+                const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/users/make-premium/${userEmail}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'

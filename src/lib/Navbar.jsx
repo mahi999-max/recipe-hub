@@ -18,12 +18,13 @@ import {
 import { getUseSession } from "./api/getApi";
 import { authClient } from "./auth-client";
 import Image from "next/image";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Logout = async () => {
   await authClient.signOut({
     fetchOptions: {
       onSuccess: () => {
-        redirect("/auth/login");
+        window.location.href = "/auth/login";
       },
     },
   });
@@ -160,6 +161,8 @@ export default function Navbar() {
             </>
           )}
         </div>
+
+        <ThemeToggle></ThemeToggle>
 
         {/* Mobile Menu Toggle */}
         <button

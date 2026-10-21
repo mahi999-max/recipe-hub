@@ -6,10 +6,9 @@ export default function ManageReports() {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // সব রিপোর্ট ফেচ করা
     const fetchReports = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/reports');
+            const res = await fetch('https://recipe-hub-server-inky.vercel.app/api/reports');
             const data = await res.json();
             setReports(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -23,22 +22,18 @@ export default function ManageReports() {
         fetchReports();
     }, []);
 
-    // ১. Remove Handler: রেসিপি এবং রিপোর্ট উভয়ই ডিলিট করবে
     const handleRemoveFood = async (reportId, foodId) => {
         if (!window.confirm("Are you sure you want to delete this recipe permanently?")) return;
 
         try {
-            // ফুড কালেকশন থেকে ডিলিট রিকোয়েস্ট
-            await fetch(`http://localhost:5000/api/allFoods/${foodId}`, {
+            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${foodId}`, {
                 method: 'DELETE',
             });
 
-            // রিপোর্ট কালেকশন থেকেও রিপোর্ট রিমুভ করা
-            await fetch(`http://localhost:5000/api/reports/${reportId}`, {
+            await fetch(`https://recipe-hub-server-inky.vercel.app/api/reports/${reportId}`, {
                 method: 'DELETE',
             });
 
-            // UI থেকে রিমুভ করা
             setReports(prev => prev.filter(report => report._id !== reportId));
             alert("Recipe removed and report cleared successfully.");
         } catch (error) {
@@ -46,12 +41,11 @@ export default function ManageReports() {
         }
     };
 
-    // ২. Dismiss Handler: শুধুমাত্র রিপোর্ট ডিলিট করবে
     const handleDismissReport = async (reportId) => {
         if (!window.confirm("Are you sure you want to dismiss this report?")) return;
 
         try {
-            await fetch(`http://localhost:5000/api/reports/${reportId}`, {
+            await fetch(`https://recipe-hub-server-inky.vercel.app/api/reports/${reportId}`, {
                 method: 'DELETE',
             });
 

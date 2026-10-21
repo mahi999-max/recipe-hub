@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 import React from 'react';
 
-const UserMainPage = () => {
+const AdminMainPage = () => {
    redirect('/dashboard/admin/overview')
 };
 
-export default UserMainPage;
+export default AdminMainPage;

@@ -1,4 +1,4 @@
-const uri = "http://localhost:5000";
+const uri = "https://recipe-hub-server-inky.vercel.app";
 
 export const getapi = async (req) => {
   try {

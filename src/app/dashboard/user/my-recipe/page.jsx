@@ -32,7 +32,7 @@ const MyRecipe = () => {
         if (!confirm("Are you sure you want to delete this recipe?")) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/allFoods/${id}`, {
+            const response = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${id}`, {
                 method: 'DELETE',
             });
 

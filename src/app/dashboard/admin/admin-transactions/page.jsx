@@ -9,20 +9,11 @@ import {
     LoaderCircle,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
-
+import { signToken } from "@/lib/token";
 const TransactionsContent = async () => {
     const session = await auth.api.getSession({ headers: await headers() });
     const user = session?.user;
-    const res = await fetch("http://localhost:5000/api/admin/transactions", {
-    cache: "no-store",
-    headers: { "x-internal-secret": process.env.INTERNAL_SECRET },
-});
-if (!res.ok) {
-    console.error("Status:", res.status, await res.text());
-    throw new Error("Failed to load transactions");
-}
 
-    // শুধু admin দেখতে পাবে
     if (user?.role !== "admin") {
         return (
             <div className="mx-auto max-w-lg px-6 py-20 text-center">
@@ -45,11 +36,16 @@ if (!res.ok) {
     let failed = false;
 
     try {
-        const res = await fetch("http://localhost:5000/api/admin/transactions", {
+        const token = signToken(user);
+
+        const res = await fetch("https://recipe-hub-server-inky.vercel.app/api/admin/transactions", {
             cache: "no-store",
-            headers: { "x-internal-secret": process.env.INTERNAL_SECRET },
+            headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) throw new Error("Failed to load transactions");
+        if (!res.ok) {
+            console.error("Status:", res.status, await res.text());
+            throw new Error("Failed to load transactions");
+        }
         transactions = await res.json();
     } catch (error) {
         console.error("Transactions fetch error:", error);

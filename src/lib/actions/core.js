@@ -1,6 +1,6 @@
 import { json } from "better-auth"
 
-const uri='http://localhost:5000'
+const uri='https://recipe-hub-server-inky.vercel.app'
 export const serverMutation=async(path,data)=>{
     const res=await fetch(`${uri}${path}`,{
         method:'POST',

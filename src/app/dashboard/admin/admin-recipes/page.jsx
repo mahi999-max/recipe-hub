@@ -10,7 +10,6 @@ export default function ManageRecipesPage() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
 
-    // API থেকে সব রেসিপি ফেচ করা
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
@@ -27,7 +26,6 @@ export default function ManageRecipesPage() {
         fetchRecipes();
     }, []);
 
-    // Featured toggle করার হ্যান্ডলার
     const handleToggleFeatured = async (recipeId, currentStatus) => {
         try {
             // Optimistic UI update
@@ -37,8 +35,7 @@ export default function ManageRecipesPage() {
                 )
             );
 
-            // API Request to update backend
-            await fetch(`http://localhost:5000/api/allFoods/${recipeId}`, {
+            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isfeatured: !currentStatus })
@@ -48,7 +45,6 @@ export default function ManageRecipesPage() {
         }
     };
 
-    // Recipe Delete হ্যান্ডলার
     const handleDeleteRecipe = async (recipeId) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this recipe?");
         if (!confirmDelete) return;
@@ -57,7 +53,7 @@ export default function ManageRecipesPage() {
             setRecipes(prev => prev.filter(item => item._id !== recipeId));
 
             // API Request to delete from backend
-            await fetch(`http://localhost:5000/api/allFoods/${recipeId}`, {
+            await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
                 method: 'DELETE'
             });
         } catch (error) {
@@ -65,14 +61,13 @@ export default function ManageRecipesPage() {
         }
     };
 
-    // ফিল্টারড রেসিপি
     const filteredRecipes = recipes.filter(recipe =>
         recipe.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         recipe.category?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
+       <div className="w-full min-w-0 max-w-7xl mx-auto p-3 sm:p-6 space-y-6">
             {/* Header section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -98,14 +93,14 @@ export default function ManageRecipesPage() {
             </div>
 
             {/* Recipe Table */}
-            <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+            <div className="w-full min-w-0 max-w-full overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                    <table className="w-full min-w-[600px] text-left text-sm text-gray-500 dark:text-gray-400">
                         <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                             <tr>
                                 <th scope="col" className="px-6 py-4">Image</th>
                                 <th scope="col" className="px-6 py-4">Title / Name</th>
-                                <th scope="col" className="px-6 py-4">Category</th>
+                                <th scope="col" className=" hidden sm:table-cell  px-6 py-4">Category</th>
                                 <th scope="col" className="px-6 py-4">Likes</th>
                                 <th scope="col" className="px-6 py-4 text-center">Actions</th>
                             </tr>
@@ -147,7 +142,7 @@ export default function ManageRecipesPage() {
                                         </td>
 
                                         {/* Category */}
-                                        <td className="px-6 py-4">
+                                        <td className="hidden sm:table-cell px-6 py-4">
                                             <span className="inline-flex rounded-full bg-orange-100 dark:bg-orange-500/10 px-3 py-1 text-xs font-semibold text-orange-700 dark:text-orange-300">
                                                 {recipe.category || "General"}
                                             </span>
@@ -191,21 +186,3 @@ export default function ManageRecipesPage() {
         </div>
     );
 }
-
-
-
-
-// import { getAllfood } from '@/lib/api/getApi';
-// import React from 'react';
-
-// const AdminRecipies = async() => {
-//     const allFoods=await getAllfood()
-//     console.log("All foods: ",allFoods);
-//     return (
-//         <div>
-//             {allFoods.length}
-//         </div>
-//     );
-// };
-
-// export default AdminRecipies;

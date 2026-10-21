@@ -8,7 +8,7 @@ export default function UserLayout({ children }) {
       <Layout></Layout>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 min-w-0 w-0 max-w-full overflow-x-hidden">
         {children}
       </main>
     </div>

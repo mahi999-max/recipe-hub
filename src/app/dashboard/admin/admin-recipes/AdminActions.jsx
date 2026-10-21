@@ -12,7 +12,7 @@ export default function AdminActions({ recipeId, initialFeatured, onDeleteSucces
         setIsfeatured(newStatus); // Instant UI feedback
 
         try {
-            const res = await fetch(`http://localhost:5000/api/allFoods/${recipeId}`, {
+            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isfeatured: newStatus })
@@ -36,7 +36,7 @@ export default function AdminActions({ recipeId, initialFeatured, onDeleteSucces
 
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:5000/api/allFoods/${recipeId}`, {
+            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/${recipeId}`, {
                 method: 'DELETE'
             });
 
@@ -68,7 +68,6 @@ export default function AdminActions({ recipeId, initialFeatured, onDeleteSucces
                 <Star size={18} className={isfeatured ? "fill-amber-500 text-amber-500" : ""} />
             </button>
 
-            {/* Delete Button */}
             <button
                 onClick={handleDelete}
                 disabled={loading}

@@ -13,9 +13,8 @@ export async function POST(req) {
             return NextResponse.json({ message: "foodId required" }, { status: 400 });
         }
 
-        // price client থেকে না, backend DB থেকে নেওয়া হচ্ছে
-        // এখানে তোমার Express-এর single recipe route বসাও
-        const foodRes = await fetch(`http://localhost:5000/api/foods/${foodId}`, {
+        
+        const foodRes = await fetch(`https://recipe-hub-server-inky.vercel.app/api/foods/${foodId}`, {
             cache: 'no-store',
         });
         if (!foodRes.ok) {

@@ -2,7 +2,7 @@
 
 
 
-import { getAllUsers } from "@/lib/api/getApi";
+import { getAllUsers } from "@/lib/api/getApiServer";
 import Image from "next/image";
 import { ShieldCheck, ShieldAlert, Users } from "lucide-react";
 import UserActions from "./UserActions";

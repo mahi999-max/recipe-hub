@@ -69,7 +69,7 @@ const FoodDetailsView = ({ food, foodId, email, purchased }) => {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/reports", {
+      const response = await fetch("https://recipe-hub-server-inky.vercel.app/api/reports", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

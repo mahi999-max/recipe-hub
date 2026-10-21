@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/lib/Navbar";
 import Footer from "@/lib/Footer";
 import { Suspense } from "react";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +26,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><Suspense fallback={<div className="h-16" />}>
+      <body className="min-h-full flex flex-col"><ThemeProvider><Suspense fallback={<div className="h-16" />}>
           <Navbar />
-        </Suspense><main>{children}</main><Footer></Footer></body>
+        </Suspense><main>{children}</main><Footer></Footer></ThemeProvider></body>
     </html>
   );
 }

@@ -32,7 +32,7 @@ const MyPurchasedRecipesPage = async () => {
 
     try {
         const res = await fetch(
-            `http://localhost:5000/api/my-purchases?email=${encodeURIComponent(email)}`,
+            `https://recipe-hub-server-inky.vercel.app/api/my-purchases?email=${encodeURIComponent(email)}`,
             { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to load purchases");

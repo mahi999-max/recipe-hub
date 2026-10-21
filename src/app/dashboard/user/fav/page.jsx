@@ -19,7 +19,7 @@ export default function FavoritesPage() {
         const fetchFavorites = async () => {
             try {
                 // ব্যাকএন্ডে ইউজারের আইডি দিয়ে ফেচ করার রুট
-                const res = await fetch(`http://localhost:5000/api/allFoods/likes/${userId}`);
+                const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/likes/${userId}`);
                 const data = await res.json();
                 setFavoriteRecipes(Array.isArray(data) ? data : []);
             } catch (error) {

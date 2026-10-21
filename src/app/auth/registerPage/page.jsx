@@ -84,7 +84,6 @@ export default function RegisterPage() {
 
       setMessage("Registration successful!");
 
-      // Redirect if your Better Auth setup does not redirect automatically
       window.location.href = "/";
     } catch (error) {
       setMessage(error.message || "Something went wrong.");

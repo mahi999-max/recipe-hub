@@ -38,7 +38,7 @@ export default function ProfilePage() {
             }
 
             // ২. সরাসরি ব্যাকএন্ড থেকে ইউজারের লেটেস্ট প্রিমিয়াম স্ট্যাটাস ফেচ করা
-            fetch(`http://localhost:5000/api/user-status?email=${user.email}`)
+            fetch(`https://recipe-hub-server-inky.vercel.app/api/user-status?email=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     if (data?.isPremium) {

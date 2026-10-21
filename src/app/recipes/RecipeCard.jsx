@@ -16,36 +16,29 @@ export default function RecipeCard({ recipe, cardVariants }) {
 
     // পেজ রিলোড বা কম্পোনেন্ট লোড হওয়ার সময় সার্ভার থেকে চেক করা এই ইউজার আগে লাইক দিয়েছে কিনা
 
-   useEffect(() => {
+    useEffect(() => {
     let cancelled = false;
 
     const checkUserLikeStatus = async () => {
-        if (!userId || !recipe._id) {
-            setIsLiked(false);
-            return;
-        }
+        if (!userId || !recipe?._id) return;
 
         try {
-            const res = await fetch(
-                `http://localhost:5000/api/allFoods/likes/${encodeURIComponent(userId)}`
-            );
+            // টোকেন ছাড়াই সরাসরি রিকোয়েস্ট পাঠানো হচ্ছে
+            const res = await fetch(`https://recipe-hub-server-inky.vercel.app/api/allFoods/likes/${userId}`);
 
-            if (!res.ok) {
-                throw new Error("Failed to fetch liked recipes");
-            }
+            if (!res.ok) throw new Error("Failed to fetch liked recipes");
 
-            const data = await res.json();
+            const likedRecipes = await res.json();
 
-            const liked = Array.isArray(data) &&
-                data.some(
+            if (!cancelled && Array.isArray(likedRecipes)) {
+                const isAlreadyLiked = likedRecipes.some(
                     (item) => String(item._id) === String(recipe._id)
                 );
 
-            if (!cancelled) {
-                setIsLiked(liked);
+                setIsLiked(isAlreadyLiked);
             }
         } catch (error) {
-            console.error("Error checking like status:", error);
+            console.error("Like status check error:", error);
         }
     };
 
@@ -68,7 +61,7 @@ export default function RecipeCard({ recipe, cardVariants }) {
 
         try {
             const res = await fetch(
-                'http://localhost:5000/api/allFoods/likes',
+                'https://recipe-hub-server-inky.vercel.app/api/allFoods/likes',
                 {
                     method: 'POST',
                     headers: {
@@ -151,16 +144,16 @@ export default function RecipeCard({ recipe, cardVariants }) {
                             type="button"
                             onClick={handleLikeToggle}
                             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border transition-all ${isLiked
-                                    ? "bg-orange-500 border-orange-500 text-white shadow-md"
-                                    : "border-gray-200 dark:border-gray-700 hover:bg-red-50 dark:hover:bg-red-950/30 text-gray-600 dark:text-gray-300"
+                                ? "bg-orange-500 border-orange-500 text-white shadow-md"
+                                : "border-gray-200 dark:border-gray-700 hover:bg-red-50 dark:hover:bg-red-950/30 text-gray-600 dark:text-gray-300"
                                 }`}
                             title={isLiked ? "Unlike recipe" : "Like recipe"}
                         >
                             <Heart
                                 size={18}
                                 className={`transition-colors ${isLiked
-                                        ? "fill-white text-white"
-                                        : "text-gray-400 group-hover/like:text-red-500"
+                                    ? "fill-white text-white"
+                                    : "text-gray-400 group-hover/like:text-red-500"
                                     }`}
                             />
                             <span className={`text-sm font-bold ${isLiked ? "text-white" : ""}`}>

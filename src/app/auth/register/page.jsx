@@ -71,9 +71,7 @@ export default function RegisterPage() {
         email,
         password,
         image: imageUrl,
-        role:"user",
         callbackURL: "/",
-          isBlocked: false
       });
 
       if (result.error) {

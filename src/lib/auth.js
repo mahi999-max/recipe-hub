@@ -11,31 +11,41 @@ if (!uri) {
 const client = new MongoClient(uri);
 const db = client.db("Recipe_Hub");
 
-console.log("Connected database name:", db.databaseName);
-
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
+  trustedOrigins: [
+    "https://recipe-hub-f35f-git-main-mahi999-maxs-projects.vercel.app",
+    "https://recipe-hub-f35f.vercel.app",
+    "http://localhost:3000",
+  ],
   emailAndPassword: {
     enabled: true,
   },
   user: {
     additionalFields: {
       role: {
-        type: 'string',
-        recquired: false,
+        type: "string",
+        required: false,
         defaultValue: "user",
-        input: false
+        input: false,
+      },
+      isBlocked: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+        input: false,
       },
       isPremium: {
         type: "boolean",
-        defaultValue: false,
         required: false,
+        defaultValue: false,
+        input: false,
       },
       premiumSince: {
         type: "date",
         required: false,
-      }
-
-    }
-  }
+        input: false,
+      },
+    },
+  },
 });

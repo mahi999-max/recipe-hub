@@ -8,7 +8,7 @@ const AdminGuard = async ({ children }) => {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session?.user) {
-    redirect("/auth/signin");
+    redirect("/auth/login");
   }
   if (session.user.role !== "admin") {
     redirect("/dashboard/user/profile");

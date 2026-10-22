@@ -33,7 +33,7 @@ const FoodDetailsView = ({ food, foodId, email, purchased }) => {
 
   const handlePurchase = async () => {
     if (!email) {
-      window.location.href = "/auth/signin";
+      window.location.href = "/auth/login";
       return;
     }
 

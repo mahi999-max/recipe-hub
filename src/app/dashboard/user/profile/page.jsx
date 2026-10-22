@@ -174,7 +174,7 @@ export default function ProfilePage() {
                     Log in to view and edit your profile.
                 </p>
                 <a
-                    href="/auth/signin"
+                    href="/auth/login"
                     className="mt-5 inline-block rounded-xl bg-orange-500 px-6 py-3 font-semibold text-white"
                 >
                     Go to Login

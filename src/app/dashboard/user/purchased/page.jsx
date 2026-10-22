@@ -1,16 +1,24 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { headers } from "next/headers";
-import { ChefHat, ShoppingBag, UserRound, Clock, ArrowRight } from "lucide-react";
+import {
+    ChefHat,
+    ShoppingBag,
+    UserRound,
+    Clock,
+    ArrowRight,
+    LoaderCircle,
+} from "lucide-react";
 import { auth } from "@/lib/auth";
+import { signToken } from "@/lib/token";
 
-
-const MyPurchasedRecipesPage = async () => {
+const PurchasedContent = async () => {
     const uri = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
     const session = await auth.api.getSession({ headers: await headers() });
-    const email = session?.user?.email;
+    const user = session?.user;
 
-    if (!email) {
+    if (!user?.email) {
         return (
             <div className="mx-auto max-w-lg px-6 py-20 text-center">
                 <UserRound className="mx-auto mb-4" size={42} />
@@ -32,10 +40,11 @@ const MyPurchasedRecipesPage = async () => {
     let failed = false;
 
     try {
-        const res = await fetch(
-            `${uri}/api/my-purchases?email=${encodeURIComponent(email)}`,
-            { cache: "no-store" }
-        );
+        const token = signToken(user);
+        const res = await fetch(`${uri}/api/my-purchases`, {
+            cache: "no-store",
+            headers: { Authorization: `Bearer ${token}` },
+        });
         if (!res.ok) throw new Error("Failed to load purchases");
         purchases = await res.json();
     } catch (error) {
@@ -144,4 +153,16 @@ const MyPurchasedRecipesPage = async () => {
     );
 };
 
-export default MyPurchasedRecipesPage;
+export default function MyPurchasedRecipesPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex min-h-[60vh] items-center justify-center">
+                    <LoaderCircle className="animate-spin text-orange-500" size={32} />
+                </div>
+            }
+        >
+            <PurchasedContent />
+        </Suspense>
+    );
+}

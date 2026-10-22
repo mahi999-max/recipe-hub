@@ -151,7 +151,7 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="/auth/registerPage"
+                href="/auth/register"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-sm font-bold text-primary-foreground hover:opacity-90"
               >
@@ -228,7 +228,7 @@ export default function Navbar() {
                 </Link>
 
                 <Link
-                  href="/auth/registerPage"
+                  href="/auth/register"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-sm font-bold text-primary-foreground hover:opacity-90"
                 >

@@ -60,7 +60,7 @@ export default function ProfilePage() {
     
     const handleSubscribe = async () => {
         try {
-            const res = await fetch("/api/checkout_sessions", {
+            const res = await fetch("/api/premium_checkout", {
                 method: "POST",
             });
 

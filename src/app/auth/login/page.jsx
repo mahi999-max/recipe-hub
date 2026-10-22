@@ -119,7 +119,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-sm text-gray-600">
           New to RecipeHub?{" "}
           <Link
-            href="/register"
+            href="/auth/register"
             className="font-semibold text-blue-600 hover:text-blue-800 hover:underline"
           >
             Create an account

@@ -127,7 +127,7 @@ export default function Banner() {
               </Link>
 
               <Link
-                href="/register"
+                href="/auth/register"
                 className="inline-flex items-center justify-center rounded-xl border border-white/50 bg-white/10 px-7 py-3.5 font-bold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white hover:text-black active:scale-95"
               >
                 Join RecipeHub

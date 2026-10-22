@@ -22,7 +22,7 @@ export default function LoginPage() {
       const result = await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/dashboard",
+        callbackURL: "/",
       });
 
       if (result.error) {
@@ -32,7 +32,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/");
       router.refresh();
     } catch (err) {
       setError(err.message || "Something went wrong. Try again.");

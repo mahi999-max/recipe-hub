@@ -72,7 +72,7 @@ export default function RegisterPage() {
         password,
         image: imageUrl,
         role:"user",
-        callbackURL: "/dashboard",
+        callbackURL: "/",
           isBlocked: false
       });
 

@@ -77,10 +77,11 @@ export default function Banner() {
       <section className="relative flex min-h-[550px] h-[calc(100vh-72px)] w-full items-center justify-center overflow-hidden">
         {/* Background Image */}
         <Image
-          src="/banner.jfif"
+          src="/banner.jpg"
           alt="Delicious food on a table"
           fill
           priority
+            unoptimized
           sizes="100vw"
           className="object-cover object-center"
         />

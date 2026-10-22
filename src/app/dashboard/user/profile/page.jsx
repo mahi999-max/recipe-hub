@@ -363,7 +363,7 @@ export default function ProfilePage() {
 
                             <ul className="mt-6 space-y-3 text-sm">
                                 <li>✓ Exclusive premium recipes</li>
-                                © <li>✓ Premium member badge</li>
+                                 <li>✓ Premium member badge</li>
                                 <li>✓ A richer RecipeHub experience</li>
                             </ul>
 

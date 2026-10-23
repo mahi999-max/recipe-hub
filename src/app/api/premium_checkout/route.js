@@ -32,7 +32,7 @@ export async function POST() {
             ],
             customer_email: email,
             metadata: { type: "premium", email },
-            success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${origin}/payment/premium-success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/dashboard/user/profile`,
         });
 

@@ -13,60 +13,59 @@ export default function OverviewPage() {
   const [loading, setLoading] = useState(true);
   const { data: session, isPending } = authClient.useSession();
 
-const user = session?.user;
- 
-useEffect(() => {
-  if (isPending) return;
+  const user = session?.user;
 
-  const loadDashboardData = async () => {
-    try {
-      // Total foods: আগের working helper ব্যবহার
-      const foodsRes = await getapi("/api/allFoods");
+  useEffect(() => {
+    if (isPending) return;
 
-      const foods = Array.isArray(foodsRes)
-        ? foodsRes
-        : foodsRes?.data || [];
+    const loadDashboardData = async () => {
+      try {
+        // Total foods: আগের working helper ব্যবহার
+        const foodsRes = await getapi("/api/allFoods");
 
-      setTotalFoods(foods.length);
+        const foods = Array.isArray(foodsRes)
+          ? foodsRes
+          : foodsRes?.data || [];
 
-      if (!user?.id || !user?.email) {
-        console.log("Session user:", user);
-        return;
+        setTotalFoods(foods.length);
+
+        if (!user?.id || !user?.email) {
+          console.log("Session user:", user);
+          return;
+        }
+
+        // Favourite: direct fetch
+        const favResponse = await fetch(
+          `${uri}/api/allFoods/likes/${encodeURIComponent(user.id)}`
+        );
+
+        if (!favResponse.ok) {
+          throw new Error(`Favourite API: ${favResponse.status}`);
+        }
+
+        const favData = await favResponse.json();
+        setTotalFavourites(favData.length);
+
+        // Purchased: direct fetch with email
+        // Purchased: নিজের Next.js route দিয়ে (সার্ভারে টোকেন বানিয়ে)
+        const purchaseResponse = await fetch("/api/purchases/count");
+
+        if (!purchaseResponse.ok) {
+          throw new Error(`Purchase API: ${purchaseResponse.status}`);
+        }
+
+        const purchaseData = await purchaseResponse.json();
+        setTotalPurchased(purchaseData.count);
+
+      } catch (error) {
+        console.error("Dashboard loading error:", error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Favourite: direct fetch
-      const favResponse = await fetch(
-        `${uri}/api/allFoods/likes/${encodeURIComponent(user.id)}`
-      );
-
-      if (!favResponse.ok) {
-        throw new Error(`Favourite API: ${favResponse.status}`);
-      }
-
-      const favData = await favResponse.json();
-      setTotalFavourites(favData.length);
-
-      // Purchased: direct fetch with email
-      const purchaseResponse = await fetch(
-        `${uri}/api/my-purchases?email=${encodeURIComponent(user.email)}`
-      );
-
-      if (!purchaseResponse.ok) {
-        throw new Error(`Purchase API: ${purchaseResponse.status}`);
-      }
-
-      const purchaseData = await purchaseResponse.json();
-      setTotalPurchased(purchaseData.length);
-
-    } catch (error) {
-      console.error("Dashboard loading error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  loadDashboardData();
-}, [isPending, user?.id, user?.email]);
+    loadDashboardData();
+  }, [isPending, user?.id, user?.email]);
 
 
   const cards = [
